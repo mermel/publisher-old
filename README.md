@@ -1,0 +1,2 @@
+# publisher
+Publish to RabbitMQ
