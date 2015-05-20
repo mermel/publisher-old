@@ -5,8 +5,6 @@ import (
   "os"
 
   "github.com/streadway/amqp"
-  "golang.org/x/net/context"
-
   "github.com/VioletGrey/error-handler"
 )
 
@@ -43,16 +41,4 @@ func Emit(exchange_name string, routing_key string, message []byte) {
   vgError.FailOnError(err, "Failed to publish a message", string(body))
 
   log.Printf(" [x] Sent %s to %s", body, routing_key)
-}
-
-//External interface to package
-type RabbitMQ struct {}
-
-func (mq RabbitMQ) PublishMsg(exchange string, routing_key string, body []byte) {
-  ctx, done := context.WithCancel(context.Background())
-  go func() {
-    Emit(exchange, routing_key, body)
-    done()
-  }()
-  <-ctx.Done()
 }
